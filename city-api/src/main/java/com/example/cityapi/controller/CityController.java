@@ -1,4 +1,4 @@
-package com.example.cityapi.controllers;
+package com.example.cityapi.controller;
 
 
 import com.example.cityapi.models.City;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import com.example.cityapi.models.city;
+import com.example.cityapi.models.City;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class CityController {
 
     @Autowired
-    private CityController cityRepository;
+    private CityRepository cityRepository;
 
     @GetMapping("/")
     public Iterable<City> findAllCity() {
@@ -58,17 +58,17 @@ public class CityController {
 
     @PatchMapping("/{cityId}")
     public City updateCityById(@PathVariable Long cityId, @RequestBody City cityRequest) throws NotFoundException {
-        City cityFromDb = CityRepository.findOne(cityId);
+        City cityFromDb = cityRepository.findOne(cityId);
 
         if (cityFromDb == null) {
             throw new NotFoundException("City with ID of " + cityId + " was not found!");
         }
 
 
-        cityFromDb.setTitle(cityRequest.getShort_Title());
-        cityFromDb.setAgency(cityRequest.getAgency_Name());
-        cityFromDb.setRequest(cityRequest.getRequest_Id());
-        cityFromDb.setSection(cityRequest.getSection_Name());
+        cityFromDb.setShort_title(cityRequest.getShort_title());
+        cityFromDb.setAgency_name(cityRequest.getAgency_name());
+        cityFromDb.setRequest_id(cityRequest.getRequest_id());
+        cityFromDb.setSection_name(cityRequest.getSection_name());
         return cityRepository.save(cityFromDb);
     }
 
@@ -87,3 +87,4 @@ public class CityController {
 
         response.sendError(HttpStatus.NOT_FOUND.value());
     }
+}
